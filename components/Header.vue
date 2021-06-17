@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
-    <header>
-    <h1 class="title"><img src="img/logo.png" width="240" height="80">
+  <header>
+    <h1 class="title"><img src="img/logo.png">
     ホーム</h1>
     <nav class="nav">
       <ul class="menu-group">
@@ -13,11 +12,12 @@
         </li>
       </ul>
     </nav>
-    </header>
-  </div>
+  </header>
 </template>
 
+<script>
 
+</script>
 
 <style scoped>
 header {
@@ -37,7 +37,7 @@ header {
   padding: 10px;
 }
 .menu-item a {
-  color: white;
+  color: black;
   text-decoration: none;
   cursor: pointer;
 }
