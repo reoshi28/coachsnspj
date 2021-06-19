@@ -17,14 +17,6 @@
       </header>
     </div>
 
-    <div class="new">
-      <h2>シェア</h2>
-      <div class="share">
-        <textarea name="share" cols="30" rows="5" maxlength="120" required id="share" v-model="newShare" />
-      </div>
-      <br />
-      <button @click="insertShare">シェアする</button>
-    </div>
     <div class="table">
       <h2>ホーム</h2>
       <table>
@@ -42,10 +34,18 @@
             </button>
           </td>
           <td>
-            <button @click="deleteShare(item.share)">削除</button>
+            <button @click="deleteShare(item.id)">削除</button>
           </td>
         </tr>
       </table>
+    </div>
+    <div class="new">
+      <h2>シェア</h2>
+      <div class="share">
+        <textarea name="share" cols="30" rows="5" maxlength="120" required id="share" v-model="newShare" />
+      </div>
+      <br />
+      <button @click="insertShare">シェアする</button>
     </div>
   </div>
 </template>
@@ -54,6 +54,13 @@
 <script>
 import firebase from '~/plugins/firebase'
 export default {
+  data() {
+    return {
+      name: "",
+      newShare: "",
+      contactLists: [],
+    };
+  },
   methods: {
     logout() {
       firebase
@@ -64,8 +71,39 @@ export default {
           this.$router.replace('/login')
         })
     },
+
+    async getShare() {
+      const resData = await this.$axios.get(
+        "http://127.0.0.1:8000/api/share/"
+      );
+      this.shareLists = resData.data.data;
+    },
+    async insertShare() {
+      const sendData = {
+        share: this.newShare,
+      };
+      await this.$axios.post("http://127.0.0.1:8000/api/share/", sendData);
+      this.getShare();
+    },
+    async updateShare(id, share) {
+      const sendData = {
+        share: share,
+      };
+      await this.$axios.put(
+        "http://127.0.0.1:8000/api/share/" + id,
+        sendData
+      );
+      this.getShare();
+    },
+    async deleteShare(id) {
+      await this.$axios.delete("http://127.0.0.1:8000/api/share/" + id);
+      this.getShare();
+    },
   },
-}
+      created() {
+      this.getShare();
+      },
+};
 </script>
 
 

@@ -17,7 +17,7 @@
     </header>
   </div>
     <h2>新規登録</h2>
-    <input type="text" v-model="newName" placeholder="name" name="name" id="name"  />
+    <input type="text" v-model="name" placeholder="name" name="name" id="name"  />
     <br />
     <input type="email" v-model="email" placeholder="email" name="email" id="email"  />
     <br />
@@ -33,7 +33,7 @@ import firebase from '~/plugins/firebase'
 export default {
   data() {
     return {
-      newName: "",
+      name: "",
       contactLists: [],
       email: null,
       password: null,
@@ -49,6 +49,16 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then((data) => {
+
+        const sendData = {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+        };
+        this.$axios.post("http://127.0.0.1:8000/api/contact/", sendData);
+        this.$router.push("/login");
+        console.log(data);
+
           data.user.sendEmailVerification().then(() => {
             this.$router.replace('/login')
           })
@@ -71,23 +81,7 @@ export default {
         })
       },
 
-    async getContact() {
-      const resData = await this.$axios.get(
-        "http://127.0.0.1:8000/api/contact/"
-      );
-      this.contactLists = resData.data.data;
-    },
-    async register() {
-      const sendData = {
-        name: this.newName,
-      };
-      await this.$axios.post("http://127.0.0.1:8000/api/contact/", sendData);
-      this.getContact();
-      this.$router.push("/login");
-    },
-    created() {
-    this.getContact();
-  },
+
 
 
   },
