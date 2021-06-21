@@ -26,7 +26,6 @@
         </tr>
         <tr v-for="item in shareLists" :key="item.id">
           <td>{{ item.id }}</td>
-          <td><input type="text" v-model="item.name" /></td>
           <td><input type="textarea" v-model="item.share" /></td>
           <td>
             <button @click="updateShare(item.id, item.share)">
