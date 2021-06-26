@@ -7,37 +7,16 @@
       <nav class="nav">
         <ul class="menu-group">
           <li class="menu-item">
-            <NuxtLink to="/home">ホーム</NuxtLink>
+            <NuxtLink to="/home"><img src="img/home.png" width="30" height="20">ホーム</NuxtLink>
           </li>
           <li class="menu-item">
-            <NuxtLink to="/login">ログアウト</NuxtLink>
+            <NuxtLink to="/login"><img src="img/logout.png" width="30" height="20">ログアウト</NuxtLink>
           </li>
         </ul>
       </nav>
       </header>
     </div>
 
-    <div class="table">
-      <h2>ホーム</h2>
-      <table>
-        <tr>
-          <th>name</th>
-          <th>share</th>
-        </tr>
-        <tr v-for="item in shareLists" :key="item.id">
-          <td>{{ item.id }}</td>
-          <td><input type="textarea" v-model="item.share" /></td>
-          <td>
-            <button @click="updateShare(item.id, item.share)">
-              更新
-            </button>
-          </td>
-          <td>
-            <button @click="deleteShare(item.id)">削除</button>
-          </td>
-        </tr>
-      </table>
-    </div>
     <div class="new">
       <h2>シェア</h2>
       <div class="share">
@@ -45,6 +24,23 @@
       </div>
       <br />
       <button @click="insertShare">シェアする</button>
+    </div>
+    <div class="table">
+      <h2>ホーム</h2>
+      <table>
+        <tr v-for="item in shareLists" :key="item.id">
+          <td>{{ item.id }}</td>
+          <td>{{ item.share }}</td>
+          <td>
+            <button @click="updateShare(item.id, item.share)">
+              <input type="image" src="img/heart.png" width="20" height="20">
+            </button>
+          </td>
+          <td>
+            <button @click="deleteShare(item.id)"><input type="image" src="img/cross.png" width="20" height="20"></button>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -57,6 +53,7 @@ export default {
     return {
       name: "",
       newShare: "",
+      shareLists: [],
       contactLists: [],
     };
   },
@@ -77,21 +74,19 @@ export default {
       );
       this.shareLists = resData.data.data;
     },
+
+    async getcontact() {
+      const resData = await this.$axios.get(
+        "http://127.0.0.1:8000/api/contact/"
+      );
+      this.contactLists = resData.data.data;
+    },
+    
     async insertShare() {
       const sendData = {
         share: this.newShare,
       };
       await this.$axios.post("http://127.0.0.1:8000/api/share/", sendData);
-      this.getShare();
-    },
-    async updateShare(id, share) {
-      const sendData = {
-        share: share,
-      };
-      await this.$axios.put(
-        "http://127.0.0.1:8000/api/share/" + id,
-        sendData
-      );
       this.getShare();
     },
     async deleteShare(id) {
@@ -129,6 +124,14 @@ header {
   cursor: pointer;
 }
 
+.new {
+  position: relative;
+  left: 10px;
+}
+
+
+
+
 
 table,
 td,
@@ -136,12 +139,20 @@ th {
   border: 1px solid #000;
   border-collapse: collapse;
   text-align: center;
+  background: black;
+  width: 500px;
 }
 td,
 th {
+  color: white;
   padding: 5px;
 }
 th {
-  background: #f0e6cc;
+  color: white;
+  background: black;
 }
+button {
+   background-color: black;
+   color: white;
+   }
 </style>
