@@ -81,10 +81,11 @@ export default {
       );
       this.contactLists = resData.data.data;
     },
-    
+
     async insertShare() {
       const sendData = {
         share: this.newShare,
+        contact_id: this.id,
       };
       await this.$axios.post("http://127.0.0.1:8000/api/share/", sendData);
       this.getShare();
