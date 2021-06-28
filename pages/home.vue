@@ -57,7 +57,6 @@ export default {
       newShare: "",
       shareLists: [],
       contactLists: [],
-      message: 'ログインができておりません',
     };
   },
 
@@ -102,9 +101,11 @@ export default {
       this.getShare();
       firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.message = 'ログイン済みです'
       }
-    })
+      })
+
+
+
       },
 };
 </script>
