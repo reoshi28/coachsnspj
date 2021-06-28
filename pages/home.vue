@@ -27,6 +27,7 @@
     </div>
     <div class="table">
       <h2>ホーム</h2>
+      <p> {{ message }} </p>
       <table>
         <tr v-for="item in shareLists" :key="item.id">
           <td>{{ item.id }}</td>
@@ -51,12 +52,15 @@ import firebase from '~/plugins/firebase'
 export default {
   data() {
     return {
+      id: "",
       name: "",
       newShare: "",
       shareLists: [],
       contactLists: [],
+      message: 'ログインができておりません',
     };
   },
+
   methods: {
     logout() {
       firebase
@@ -67,7 +71,6 @@ export default {
           this.$router.replace('/login')
         })
     },
-
     async getShare() {
       const resData = await this.$axios.get(
         "http://127.0.0.1:8000/api/share/"
@@ -97,6 +100,11 @@ export default {
   },
       created() {
       this.getShare();
+      firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.message = 'ログイン済みです'
+      }
+    })
       },
 };
 </script>
