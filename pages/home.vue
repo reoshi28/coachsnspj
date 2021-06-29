@@ -27,10 +27,10 @@
     </div>
     <div class="table">
       <h2>ホーム</h2>
-      <p> {{ message }} </p>
+      <p> {{message}} </p>
       <table>
         <tr v-for="item in shareLists" :key="item.id">
-          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
           <td>{{ item.share }}</td>
           <td>
             <button @click="updateShare(item.id, item.share)">
@@ -57,6 +57,7 @@ export default {
       newShare: "",
       shareLists: [],
       contactLists: [],
+      message: 'ログインができておりません',
     };
   },
 
@@ -101,8 +102,11 @@ export default {
       this.getShare();
       firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.message = 'ログイン済みです'
       }
       })
+      
+
 
 
 

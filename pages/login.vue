@@ -48,6 +48,7 @@ export default {
         .then(() => {
           alert('ログインが完了しました')
           this.$router.push('home')
+          console.log(firebase.auth().currentUser.displayName);
         })
         .catch((error) => {
           switch (error.code) {
